@@ -1,0 +1,41 @@
+.table{
+    thead{
+        th{
+            border-top: 0 !important;
+            font-weight: 600;
+        }
+    }
+
+    tr.active{
+        td{
+            background: #f5f6fa;
+        }
+    }
+}
+
+.table-responsive.loading{
+    position: relative;
+    pointer-events: none;
+
+    &:before{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,.9);
+        z-index: 100;
+    }
+
+    &:after{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: $loading-element;
+        z-index: 200;
+    }
+}

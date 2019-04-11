@@ -1,0 +1,24 @@
+{
+  "name": "backend_user_crud",
+  "version": "1.0.0",
+  "description": "Codígo backend para el crud de usuarios",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express"
+  ],
+  "author": "Carlos Escorche",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.5",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "express-fileupload": "^1.1.3-alpha.2",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.4.19",
+    "mongoose-unique-validator": "^2.0.2"
+  }
+}
