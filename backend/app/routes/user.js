@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     const limit = req.query.limit || 10
     const skip = req.query.skip || 0
 
-    User.find({status:true},'name lastname email image type status').skip(parseInt(skip)).limit(parseInt(limit)).exec((err,users) => {
+    User.find({status:true},'name lastname email image type status').sort({_id : -1}).skip(parseInt(skip)).limit(parseInt(limit)).exec((err,users) => {
 
         if (err) {
             return res.status(400).json({
@@ -50,7 +50,9 @@ router.get('/:id',(req,res) => {
         if (!userDB) {
             return res.status(404).json({
                 ok: false,
-                err: 'Usuario no encontrado'
+                err: {
+                    message: 'Usuario no encontrado'
+                }
             })
         } 
 
@@ -86,7 +88,7 @@ router.delete('/:id', (req, res) => {
     
     const id = req.params.id
 
-    User.findByIdAndUpdate(id, { $set: { status: false } }, { new: true }, (err, userdb) => {
+    User.findById(id,(err,userdb) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -94,19 +96,38 @@ router.delete('/:id', (req, res) => {
             })
         }
 
-        if(!userdb){
+        if (!userdb) {
             return res.status(404).json({
-                ok:false,
-                err:'Usuario no encontrado'
+                ok: false,
+                err: {
+                    message:'Usuario no encontrado'
+                }
             })
         }
 
-        return res.json({
-            ok: true,
-            user: userdb
+        if(userdb.type === 'ADMIN'){
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    message: 'No tiene provilegios para eliminar usuarios administradores'
+                }
+            })
+        }
+
+        User.findByIdAndUpdate(id, { $set: { status: false } }, { new: true }, (err, userdb) => {
+            if (err) {
+                return res.status(400).json({
+                    ok: false,
+                    err: err
+                })
+            }
+
+            return res.json({
+                ok: true,
+                user: userdb
+            })
         })
     })
-
 })
 
 // Crear usuario
@@ -221,8 +242,6 @@ router.get('/image/:img', (req, res) => {
     let img = req.params.img;
 
     let pathImagen = path.resolve(__dirname, `../../uploads/users/${img}`);
-
-    console.log(pathImagen);
 
     if (fs.existsSync(pathImagen)) {
         res.sendFile(pathImagen);

@@ -6,7 +6,13 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 // ============================
 //  Puerto
 // ============================
-process.env.PORT = process.env.PORT || 8081;
+process.env.PORT = process.env.PORT || 8080;
+
+
+// ============================
+//  app permitida
+// ============================
+process.env.FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:3000'
 
 
 // ============================
